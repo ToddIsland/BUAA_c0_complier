@@ -132,6 +132,9 @@ namespace miniplc0 {
 												case '!':
 													current_state = DFAState::NOT_EQUAL_STATE;
 													break;
+												case ',':
+													current_state = DFAState::COMMA_STATE;
+													break;
 													///// 请填空：
 													///// 对于其他的可接受字符
 													///// 切换到对应的状态
@@ -426,6 +429,11 @@ namespace miniplc0 {
 										  return std::make_pair(std::make_optional<Token>(TokenType::SEMICOLON, ';', pos, currentPos()),
 												  std::optional<CompilationError>());
 									  }
+				case COMMA_STATE:{
+									 unreadLast();
+									 return std::make_pair(std::make_optional<Token>(TokenType::COMMA,',',pos,currentPos()),
+											 std::optional<CompilationError>());
+								 }
 				case LEFTBRACKET_STATE: {
 											unreadLast();
 											return std::make_pair(std::make_optional<Token>(TokenType::LEFT_BRACKET, '(', pos, currentPos()),

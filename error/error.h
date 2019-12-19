@@ -28,7 +28,11 @@ namespace miniplc0 {
 		ErrNoEnd,
 		ErrNeedIdentifier,
 		ErrNeedEqualSign,//need equal sign
+		ErrNeedTypeSpecifier,
 		ErrConstantNeedValue,
+		ErrNeedBracket,
+		ErrNeedBrace,
+		ErrNeedComma,
 		ErrNoSemicolon,
 		ErrInvalidVariableDeclaration,
 		ErrIncompleteExpression,

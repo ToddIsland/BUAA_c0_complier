@@ -95,6 +95,7 @@ namespace miniplc0 {
 		std::map<std::string, int32_t> _uninitialized_vars;
 		std::map<std::string, int32_t> _vars;
 		std::map<std::string, int32_t> _consts;
+		std::map<std::string, int32_t> _funcs;//函数名
 		// 下一个 token 在栈的偏移
 		int32_t _nextTokenIndex;
 	};
