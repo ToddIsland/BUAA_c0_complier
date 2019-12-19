@@ -237,6 +237,7 @@ namespace miniplc0 {
 																	 currentPos()), std::optional<CompilationError>());
 												 }
 											 }
+					 //输出token的时候为UNSIGNED_INTEGER
 				case HEXADECIMAL_INTEGER_STATE:{
 												   auto ch = current_char.value();
 												   if(!current_char.has_value())
@@ -246,7 +247,7 @@ namespace miniplc0 {
 													   out = std::stol(outstr,0,16);
 													   outstr = std::to_string(out);
 													   return std::make_pair(
-															   std::make_optional<Token>(TokenType::HEXADECIMAL_INTEGER,outstr,pos,
+															   std::make_optional<Token>(TokenType::UNSIGNED_INTEGER,outstr,pos,
 																   currentPos()),std::optional<CompilationError>()
 															   );
 												   }
@@ -269,7 +270,7 @@ namespace miniplc0 {
 													   //std::cout << out << std:: endl;
 													   outstr = std::to_string(out);
 													   return std::make_pair(
-															   std::make_optional<Token>(TokenType::HEXADECIMAL_INTEGER,outstr,pos,
+															   std::make_optional<Token>(TokenType::UNSIGNED_INTEGER,outstr,pos,
 																   currentPos()),std::optional<CompilationError>()
 															   );
 												   }

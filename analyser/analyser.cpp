@@ -252,7 +252,7 @@ namespace miniplc0 {
 						return err;
 					break;
 				case TokenType::PRINT :
-					auto err = analysePrintStatement();
+					auto err = analyseOutputStatement();
 					if(err.has_value())
 						return err;
 					break;
@@ -270,7 +270,7 @@ namespace miniplc0 {
 							return err;
 						break;
 					}
-					else if(isFunc(next.value()))
+					else if(isFunc(next.value().GetValueString()))
 					{
 						auto err = analyseFunctionCall();
 						if(err.has_value())
@@ -295,7 +295,7 @@ namespace miniplc0 {
 		next = nextToken();
 		if(next.value().GetType() != TokenType::RIGHT_BRACKET)	
 			return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedBracket);
-		
+
 		err = analyseStatementSequence();
 		if(err.has_value())
 			return err;
@@ -323,31 +323,38 @@ namespace miniplc0 {
 		return {};
 	}
 
-	std::optional<CompilationError> Analyser::analysePrintStatement() {
-		auto next = nextToken();
-		if(next.value().GetType() != TokenType::LEFT_BRACKET)
-			return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedBracket);
+	//std::optional<CompilationError> Analyser::analysePrintStatement() {
+	//auto next = nextToken();
+	//if(next.value().GetType() != TokenType::LEFT_BRACKET)
+	//return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedBracket);
 
-		//analyseExpression
-		
-		next = nextToken();
-		if(next.value().GetType() != TokenType::SEMICOLON)
-			return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNoSemicolon);
-	}
+	//analyseExpression
 
+	//next = nextToken();
+	//if(next.value().GetType() != TokenType::SEMICOLON)
+	//return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNoSemicolon);
+	//}
+
+	//<scan-statement> ::=
+	//'scan' '(' <identifier> ')' ';'
 	std::optional<CompilationError> Analyser::analyseScanStatement() {
 		auto next = nextToken();
+
+		//'('
 		if(next.value().GetType() != TokenType::LEFT_BRACKET)
 			return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedBracket);
 
+		//<identifier>
 		next = nextToken();
 		if(next.value().GetType() != TokenType::IDENTIFIER)
 			return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedIdentifier);
 
+		//')'
 		next = nextToken();
 		if(next.value().GetType() != TokenType::RIGHT_BRACKET)
 			return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedBracket);
-		
+
+		//';'
 		next = nextToken();
 		if(next.value().GetType() != TokenType::SEMICOLON)
 			return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNoSemicolon);
@@ -549,13 +556,29 @@ namespace miniplc0 {
 	}
 
 	// <表达式> ::= <项>{<加法型运算符><项>}
+	// <expression> ::=
+	//<additive-expression>
+	//<additive-expression> ::=
+	//<multiplicative-expression>{<additive-operator><multiplicative-expression>}
+	//<multiplicative-expression> ::=
+	//<cast-expression>{<multiplicative-operator><cast-expression>}
+	//<cast-expression> ::=
+	//{'('<type-specifier>')'}<unary-expression>
+	//<unary-expression> ::=
+	//[<unary-operator>]<primary-expression>
+	//<primary-expression> ::=
+	//'('<expression>')'
+	//|<identifier>
+	//|<integer-literal>
+	//|<function-call>
 	std::optional<CompilationError> Analyser::analyseExpression() {
-		// <项>
-		auto err = analyseItem();
+		//<multiplicative-expression> 
+		auto err = analyseMultiplicativeExpression();
 		if (err.has_value())
 			return err;
 
 		// {<加法型运算符><项>}
+		// {<additive-operator><multiplicative-expression>}
 		while (true) {
 			// 预读
 			auto next = nextToken();
@@ -568,15 +591,15 @@ namespace miniplc0 {
 			}
 
 			// <项>
-			err = analyseItem();
+			err = analyseMultiplicativeExpression();
 			if (err.has_value())
 				return err;
 
 			// 根据结果生成指令
-			if (type == TokenType::PLUS_SIGN)
-				_instructions.emplace_back(Operation::ADD, 0);
-			else if (type == TokenType::MINUS_SIGN)
-				_instructions.emplace_back(Operation::SUB, 0);
+			//if (type == TokenType::PLUS_SIGN)
+			//_instructions.emplace_back(Operation::ADD, 0);
+			//else if (type == TokenType::MINUS_SIGN)
+			//_instructions.emplace_back(Operation::SUB, 0);
 		}
 		return {};
 	}
@@ -584,7 +607,8 @@ namespace miniplc0 {
 	// <赋值语句> ::= <标识符>'='<表达式>';'
 	// 需要补全
 	// <assignment-expression> ::=
-    //<identifier><assignment-operator><expression>
+	//<identifier><assignment-operator><expression>
+	//<assignment-operator>     ::= '='
 	std::optional<CompilationError> Analyser::analyseAssignmentStatement() {
 		// 这里除了语法分析以外还要留意
 		// 标识符声明过吗？
@@ -614,12 +638,12 @@ namespace miniplc0 {
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNoSemicolon);
 
 		//从未初始化的集合中删除
-		if (isUninitializedVariable(ident.value().GetValueString())) {
-			_vars[ident.value().GetValueString()] = _uninitialized_vars[ident.value().GetValueString()];
-			_uninitialized_vars.erase(ident.value().GetValueString());
-		}
+		//if (isUninitializedVariable(ident.value().GetValueString())) {
+		//_vars[ident.value().GetValueString()] = _uninitialized_vars[ident.value().GetValueString()];
+		//_uninitialized_vars.erase(ident.value().GetValueString());
+		//}
 
-		_instructions.emplace_back(Operation::STO, getIndex(ident.value().GetValueString()));//进行赋值
+		//_instructions.emplace_back(Operation::STO, getIndex(ident.value().GetValueString()));//进行赋值
 
 		return {};
 	}
@@ -654,11 +678,24 @@ namespace miniplc0 {
 		return {};
 	}
 
+	//<multiplicative-expression> ::=
+	//<cast-expression>{<multiplicative-operator><cast-expression>}
+	//<cast-expression> ::=
+	//{'('<type-specifier>')'}<unary-expression>
+	//<unary-expression> ::=
+	//[<unary-operator>]<primary-expression>
+	//<primary-expression> ::=
+	//'('<expression>')'
+	//|<identifier>
+	//|<integer-literal>
+	//|<char-literal>
+	//|<floating-literal>
+	//|<function-call>
 	// <项> :: = <因子>{ <乘法型运算符><因子> }
 	// 需要补全
-	std::optional<CompilationError> Analyser::analyseItem() {
+	std::optional<CompilationError> Analyser::analyseMultiplicativeExpression() {
 		// 可以参考 <表达式> 实现
-		auto err = analyseFactor();
+		auto err = analyseUnaryExpression();
 		if (err.has_value())
 			return err;
 
@@ -675,25 +712,65 @@ namespace miniplc0 {
 			}
 
 			//<因子>
-			err = analyseFactor();
+			err = analyseUnaryExpression();
 			if (err.has_value())
 				return err;
 
 			//根据结果生成指令
-			if (type == TokenType::MULTIPLICATION_SIGN)
-				_instructions.emplace_back(Operation::MUL, 0);
-			else if (type == TokenType::DIVISION_SIGN)
-				_instructions.emplace_back(Operation::DIV, 0);
+			//if (type == TokenType::MULTIPLICATION_SIGN)
+			//_instructions.emplace_back(Operation::MUL, 0);
+			//else if (type == TokenType::DIVISION_SIGN)
+			//_instructions.emplace_back(Operation::DIV, 0);
 		}
 
 		return {};
 	}
 
+	//<function-call> ::=
+	//<identifier> '(' [<expression-list>] ')'
+	//<expression-list> ::=
+	//<expression>{','<expression>}
+	std::optional<CompilationError> Analyser::analyseFunctionCall() {
+		//已经将function读入
+
+		auto next = nextToken();
+		if(!next.has_value() || next.value().GetType() != TokenType::LEFT_BRACKET)
+			return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedBracket);
+
+		while(true)
+		{
+			auto next = nextToken();
+			auto type = next.value().GetType();
+			//没有 <expression-list>
+			if(type != TokenType::MINUS_SIGN ||
+					type != TokenType::PLUS_SIGN ||
+					type != TokenType::IDENTIFIER ||
+					type != TokenType::UNSIGNED_INTEGER ||
+					type != TokenType::LEFT_BRACKET)
+				break;
+
+			auto err = analyseExpression();
+			if(err.has_value())
+				return err;
+
+			next = nextToken();
+			if(!next.has_value() || next.value().GetType() != TokenType::COMMA)
+				return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNeedComma);
+		}
+	}
+
+	//<unary-expression> ::=
+	//[<unary-operator>]<primary-expression>
+	//<primary-expression> ::=
+	//'('<expression>')'
+	//|<identifier>
+	//|<integer-literal>
+	//|<function-call>
 	// <因子> ::= [<符号>]( <标识符> | <无符号整数> | '('<表达式>')' )
 	// 需要补全
 	// 因子是指令最重要的一步
-	std::optional<CompilationError> Analyser::analyseFactor() {
-		// [<符号>]
+	std::optional<CompilationError> Analyser::analyseUnaryExpression() {
+		// [<unary-operator>]
 		auto next = nextToken();
 		auto prefix = 1;
 		if (!next.has_value())
@@ -720,15 +797,29 @@ namespace miniplc0 {
 											//没有被初始化
 											if(isUninitializedVariable(next.value().GetValueString()))
 												return std::make_optional<CompilationError>(_current_pos,ErrorCode::ErrNotInitialized);
-											_instructions.emplace_back(Operation::LOD, getIndex(next.value().GetValueString()));//加载标识符的值
+
+											if(isInitializedVariable(next.value().GetValueString()))
+											{
+
+											}
+											else(isFunc(next.value().GetValueString()))
+											{
+												auto err = analyseFunctionCall();
+												if(err.has_value())
+													return err;
+
+											}
+											//_instructions.emplace_back(Operation::LOD, getIndex(next.value().GetValueString()));//加载标识符的值
 											break;
 										}
 			case TokenType::UNSIGNED_INTEGER: {
-												  int len = next.value().GetValueString().length();
-												  int64_t result_num = std::stol(next.value().GetValueString());
-												  if (len > 10 || result_num > 4294967295)
-													  return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIntegerOverflow);//溢出
-												  _instructions.emplace_back(Operation::LIT, result_num);
+												  //int len = next.value().GetValueString().length();
+												  //int64_t result_num = std::stol(next.value().GetValueString());
+												  //if (len > 10 || result_num > 4294967295)
+												  //return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIntegerOverflow);//溢出
+												  //_instructions.emplace_back(Operation::LIT, result_num);
+
+
 												  break;
 											  }
 			case TokenType::LEFT_BRACKET: {
@@ -745,9 +836,9 @@ namespace miniplc0 {
 										  return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIncompleteExpression);
 		}
 
-		// 取负
-		if (prefix == -1)
-			_instructions.emplace_back(Operation::SUB, 0);
+		//取负
+		//if (prefix == -1)
+		//_instructions.emplace_back(Operation::SUB, 0);
 		return {};
 	}
 
