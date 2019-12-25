@@ -26,7 +26,7 @@ void Tokenize(std::istream& input, std::ostream& output) {
 }
 
 void Analyse(std::istream& input, std::ostream& output){
-	auto tks = _tokenize(input);
+	auto tks = _tokenize(input);//获得所有的tokens
 	miniplc0::Analyser analyser(tks);
 	auto p = analyser.Analyse();
 	if (p.second.has_value()) {

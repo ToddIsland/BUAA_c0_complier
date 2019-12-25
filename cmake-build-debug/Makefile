@@ -56,30 +56,6 @@ CMAKE_BINARY_DIR = /Users/todd/Desktop/c0-compiler/cmake-build-debug
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
-
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
@@ -100,17 +76,6 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
 
 # Special rule for the target install/local
 install/local: preinstall
@@ -134,6 +99,41 @@ test:
 test/fast: test
 
 .PHONY : test/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -168,6 +168,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named cc0_lib
+
+# Build rule for target.
+cc0_lib: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cc0_lib
+.PHONY : cc0_lib
+
+# fast build rule for target.
+cc0_lib/fast:
+	$(MAKE) -f CMakeFiles/cc0_lib.dir/build.make CMakeFiles/cc0_lib.dir/build
+.PHONY : cc0_lib/fast
+
+#=============================================================================
 # Target rules for targets named miniplc0_test
 
 # Build rule for target.
@@ -181,30 +194,17 @@ miniplc0_test/fast:
 .PHONY : miniplc0_test/fast
 
 #=============================================================================
-# Target rules for targets named miniplc0
+# Target rules for targets named cc0
 
 # Build rule for target.
-miniplc0: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 miniplc0
-.PHONY : miniplc0
+cc0: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cc0
+.PHONY : cc0
 
 # fast build rule for target.
-miniplc0/fast:
-	$(MAKE) -f CMakeFiles/miniplc0.dir/build.make CMakeFiles/miniplc0.dir/build
-.PHONY : miniplc0/fast
-
-#=============================================================================
-# Target rules for targets named miniplc0_lib
-
-# Build rule for target.
-miniplc0_lib: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 miniplc0_lib
-.PHONY : miniplc0_lib
-
-# fast build rule for target.
-miniplc0_lib/fast:
-	$(MAKE) -f CMakeFiles/miniplc0_lib.dir/build.make CMakeFiles/miniplc0_lib.dir/build
-.PHONY : miniplc0_lib/fast
+cc0/fast:
+	$(MAKE) -f CMakeFiles/cc0.dir/build.make CMakeFiles/cc0.dir/build
+.PHONY : cc0/fast
 
 #=============================================================================
 # Target rules for targets named fmt
@@ -225,7 +225,7 @@ analyser/analyser.o: analyser/analyser.cpp.o
 
 # target to build an object file
 analyser/analyser.cpp.o:
-	$(MAKE) -f CMakeFiles/miniplc0_lib.dir/build.make CMakeFiles/miniplc0_lib.dir/analyser/analyser.cpp.o
+	$(MAKE) -f CMakeFiles/cc0_lib.dir/build.make CMakeFiles/cc0_lib.dir/analyser/analyser.cpp.o
 .PHONY : analyser/analyser.cpp.o
 
 analyser/analyser.i: analyser/analyser.cpp.i
@@ -234,7 +234,7 @@ analyser/analyser.i: analyser/analyser.cpp.i
 
 # target to preprocess a source file
 analyser/analyser.cpp.i:
-	$(MAKE) -f CMakeFiles/miniplc0_lib.dir/build.make CMakeFiles/miniplc0_lib.dir/analyser/analyser.cpp.i
+	$(MAKE) -f CMakeFiles/cc0_lib.dir/build.make CMakeFiles/cc0_lib.dir/analyser/analyser.cpp.i
 .PHONY : analyser/analyser.cpp.i
 
 analyser/analyser.s: analyser/analyser.cpp.s
@@ -243,7 +243,7 @@ analyser/analyser.s: analyser/analyser.cpp.s
 
 # target to generate assembly for a file
 analyser/analyser.cpp.s:
-	$(MAKE) -f CMakeFiles/miniplc0_lib.dir/build.make CMakeFiles/miniplc0_lib.dir/analyser/analyser.cpp.s
+	$(MAKE) -f CMakeFiles/cc0_lib.dir/build.make CMakeFiles/cc0_lib.dir/analyser/analyser.cpp.s
 .PHONY : analyser/analyser.cpp.s
 
 main.o: main.cpp.o
@@ -252,7 +252,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/miniplc0.dir/build.make CMakeFiles/miniplc0.dir/main.cpp.o
+	$(MAKE) -f CMakeFiles/cc0.dir/build.make CMakeFiles/cc0.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -261,7 +261,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/miniplc0.dir/build.make CMakeFiles/miniplc0.dir/main.cpp.i
+	$(MAKE) -f CMakeFiles/cc0.dir/build.make CMakeFiles/cc0.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -270,7 +270,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/miniplc0.dir/build.make CMakeFiles/miniplc0.dir/main.cpp.s
+	$(MAKE) -f CMakeFiles/cc0.dir/build.make CMakeFiles/cc0.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 tests/test_analyser.o: tests/test_analyser.cpp.o
@@ -360,7 +360,7 @@ tokenizer/tokenizer.o: tokenizer/tokenizer.cpp.o
 
 # target to build an object file
 tokenizer/tokenizer.cpp.o:
-	$(MAKE) -f CMakeFiles/miniplc0_lib.dir/build.make CMakeFiles/miniplc0_lib.dir/tokenizer/tokenizer.cpp.o
+	$(MAKE) -f CMakeFiles/cc0_lib.dir/build.make CMakeFiles/cc0_lib.dir/tokenizer/tokenizer.cpp.o
 .PHONY : tokenizer/tokenizer.cpp.o
 
 tokenizer/tokenizer.i: tokenizer/tokenizer.cpp.i
@@ -369,7 +369,7 @@ tokenizer/tokenizer.i: tokenizer/tokenizer.cpp.i
 
 # target to preprocess a source file
 tokenizer/tokenizer.cpp.i:
-	$(MAKE) -f CMakeFiles/miniplc0_lib.dir/build.make CMakeFiles/miniplc0_lib.dir/tokenizer/tokenizer.cpp.i
+	$(MAKE) -f CMakeFiles/cc0_lib.dir/build.make CMakeFiles/cc0_lib.dir/tokenizer/tokenizer.cpp.i
 .PHONY : tokenizer/tokenizer.cpp.i
 
 tokenizer/tokenizer.s: tokenizer/tokenizer.cpp.s
@@ -378,7 +378,7 @@ tokenizer/tokenizer.s: tokenizer/tokenizer.cpp.s
 
 # target to generate assembly for a file
 tokenizer/tokenizer.cpp.s:
-	$(MAKE) -f CMakeFiles/miniplc0_lib.dir/build.make CMakeFiles/miniplc0_lib.dir/tokenizer/tokenizer.cpp.s
+	$(MAKE) -f CMakeFiles/cc0_lib.dir/build.make CMakeFiles/cc0_lib.dir/tokenizer/tokenizer.cpp.s
 .PHONY : tokenizer/tokenizer.cpp.s
 
 # Help Target
@@ -387,16 +387,16 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... install/strip"
-	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
 	@echo "... install/local"
 	@echo "... test"
+	@echo "... cc0_lib"
 	@echo "... miniplc0_test"
-	@echo "... miniplc0"
-	@echo "... miniplc0_lib"
+	@echo "... edit_cache"
+	@echo "... install/strip"
+	@echo "... install"
+	@echo "... cc0"
 	@echo "... fmt"
 	@echo "... analyser/analyser.o"
 	@echo "... analyser/analyser.i"

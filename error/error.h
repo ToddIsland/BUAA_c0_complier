@@ -41,7 +41,8 @@ namespace miniplc0 {
 		ErrDuplicateDeclaration,
 		ErrNotInitialized,
 		ErrInvalidAssignment,
-		ErrInvalidPrint
+		ErrInvalidPrint,
+		ErrGoToFuncDef,
 	};
 
 	class CompilationError final{

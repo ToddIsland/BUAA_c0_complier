@@ -109,7 +109,7 @@ miniplc0_test: CMakeFiles/miniplc0_test.dir/tests/test_main.cpp.o
 miniplc0_test: CMakeFiles/miniplc0_test.dir/tests/test_tokenizer.cpp.o
 miniplc0_test: CMakeFiles/miniplc0_test.dir/tests/test_analyser.cpp.o
 miniplc0_test: CMakeFiles/miniplc0_test.dir/build.make
-miniplc0_test: libminiplc0_lib.a
+miniplc0_test: libcc0_lib.a
 miniplc0_test: 3rd_party/fmt/libfmtd.a
 miniplc0_test: CMakeFiles/miniplc0_test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/todd/Desktop/c0-compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable miniplc0_test"

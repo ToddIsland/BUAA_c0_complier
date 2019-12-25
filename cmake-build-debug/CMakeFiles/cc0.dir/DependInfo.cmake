@@ -4,9 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/todd/Desktop/c0-compiler/tests/test_analyser.cpp" "/Users/todd/Desktop/c0-compiler/cmake-build-debug/CMakeFiles/miniplc0_test.dir/tests/test_analyser.cpp.o"
-  "/Users/todd/Desktop/c0-compiler/tests/test_main.cpp" "/Users/todd/Desktop/c0-compiler/cmake-build-debug/CMakeFiles/miniplc0_test.dir/tests/test_main.cpp.o"
-  "/Users/todd/Desktop/c0-compiler/tests/test_tokenizer.cpp" "/Users/todd/Desktop/c0-compiler/cmake-build-debug/CMakeFiles/miniplc0_test.dir/tests/test_tokenizer.cpp.o"
+  "/Users/todd/Desktop/c0-compiler/main.cpp" "/Users/todd/Desktop/c0-compiler/cmake-build-debug/CMakeFiles/cc0.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
@@ -18,7 +16,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../."
-  "../3rd_party/catch2"
+  "../3rd_party/argparse/include"
   "../3rd_party/fmt/include"
   )
 

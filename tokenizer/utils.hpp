@@ -13,7 +13,7 @@
 namespace miniplc0 {
 	IS_FUNC(isprint);
 	IS_FUNC(isspace);
-	IS_FUNC(isblank);
+	IS_FUNC(isblank);w
 	IS_FUNC(isalpha);
 	IS_FUNC(isupper);
 	IS_FUNC(islower);
